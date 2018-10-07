@@ -87,11 +87,20 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/time"
+                android:text="温度:0℃"
+                android:textColor="@android:color/white"
                 android:textSize="15sp"
-                android:text="温度:57%"
+                android:layout_marginLeft="15dp"
+                android:id="@+id/temperature_today"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:text="湿度:57%"
                 android:layout_marginLeft="15dp"
                 android:textColor="@android:color/white"
-                android:layout_below="@id/time"
+                android:layout_below="@id/temperature_today"
                 android:id="@+id/humidity"/>
             <!--PM2.5-->
             <ImageView
@@ -181,6 +190,14 @@
                 android:layout_marginLeft="5dp"
                 android:id="@+id/wind"/>
         </RelativeLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="myButton"
+            android:textAllCaps="false"
+            android:textSize="20sp"
+            android:id="@+id/button1"/>
 
     </LinearLayout>
 </RelativeLayout>
