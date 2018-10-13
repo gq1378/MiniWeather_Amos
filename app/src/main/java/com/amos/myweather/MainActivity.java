@@ -36,7 +36,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
     private ImageView weatherImg,pmImag;
 
     private Handler mHandler=new Handler(){
-        public void handleMessage(android.os.Message msg){
+        public void handleMessage(Message msg){
             switch (msg.what){
                 case UPDATE_TODAY_WEATHER:
                     updateTodayWeather((TodayWeather)msg.obj);
@@ -52,7 +52,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.weather_info);
 
-        mUpdateBtn=(ImageView)findViewById(R.id.title_update_btn);
+        mUpdateBtn=findViewById(R.id.title_update_btn);
         mUpdateBtn.setOnClickListener(this);
 
         if(NetUtil.getNetworkState(this)!=NetUtil.NETWORK_NONE){
@@ -126,19 +126,19 @@ public class MainActivity extends Activity implements View.OnClickListener{
     }
 
     void initView(){
-        city_name_Tv=(TextView)findViewById(R.id.title_city_name);
-        cityTv=(TextView)findViewById(R.id.city);
-        timeTv=(TextView)findViewById(R.id.time);
-        humidityTv=(TextView)findViewById(R.id.humidity);
-        weekTv=(TextView)findViewById(R.id.week);
-        pmDataTv=(TextView)findViewById(R.id.pm_data);
-        pmQualityTv=(TextView)findViewById(R.id.pm_quality);
-        temperatureTv=(TextView)findViewById(R.id.temperature);
-        climateTv=(TextView)findViewById(R.id.climate);
-        windTv=(TextView)findViewById(R.id.wind);
-        wenduTv=(TextView) findViewById(R.id.temperature_today);
-        weatherImg=(ImageView) findViewById(R.id.weather_img);
-        pmImag=(ImageView) findViewById(R.id.pm2_5_img);
+        city_name_Tv=findViewById(R.id.title_city_name);
+        cityTv=findViewById(R.id.city);
+        timeTv=findViewById(R.id.time);
+        humidityTv=findViewById(R.id.humidity);
+        weekTv=findViewById(R.id.week);
+        pmDataTv=findViewById(R.id.pm_data);
+        pmQualityTv=findViewById(R.id.pm_quality);
+        temperatureTv=findViewById(R.id.temperature);
+        climateTv=findViewById(R.id.climate);
+        windTv=findViewById(R.id.wind);
+        wenduTv=findViewById(R.id.temperature_today);
+        weatherImg=findViewById(R.id.weather_img);
+        pmImag=findViewById(R.id.pm2_5_img);
 
         cityTv.setText("N/A");
         city_name_Tv.setText("N/A");
@@ -155,12 +155,12 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
     private TodayWeather parseXML(String xmldata){
         TodayWeather todayWeather=null;
-//        int fengxiangCount=0;
-//        int fengliCount=0;
-//        int dateCount=0;
-//        int highCount =0;
-//        int lowCount=0;
-//        int typeCount =0;
+        int fengxiangCount=0;
+        int fengliCount=0;
+        int dateCount=0;
+        int highCount=0;
+        int lowCount=0;
+        int typeCount=0;
         try{
             XmlPullParserFactory fac=XmlPullParserFactory.newInstance();
             XmlPullParser xmlPullParser=fac.newPullParser();
@@ -193,22 +193,22 @@ public class MainActivity extends Activity implements View.OnClickListener{
                             }else if (xmlPullParser.getName().equals("quality")) {
                                 eventType = xmlPullParser.next();
                                 todayWeather.setQuality(xmlPullParser.getText());
-                            }else if (xmlPullParser.getName().equals("fengxiang")) {
+                            }else if (xmlPullParser.getName().equals("fengxiang") && (fengxiangCount++)==0) {
                                 eventType = xmlPullParser.next();
                                 todayWeather.setFengxiang(xmlPullParser.getText());
-                            }else if (xmlPullParser.getName().equals("fengli")) {
+                            }else if (xmlPullParser.getName().equals("fengli") && (fengliCount++)==0) {
                                 eventType = xmlPullParser.next();
                                 todayWeather.setFengli(xmlPullParser.getText());
-                            }else if (xmlPullParser.getName().equals("date")) {
+                            }else if (xmlPullParser.getName().equals("date") && (dateCount++)==0) {
                                 eventType = xmlPullParser.next();
                                 todayWeather.setDate(xmlPullParser.getText());
-                            }else if (xmlPullParser.getName().equals("high")) {
+                            }else if (xmlPullParser.getName().equals("high") && (highCount++)==0) {
                                 eventType = xmlPullParser.next();
                                 todayWeather.setHigh(xmlPullParser.getText());
-                            }else if (xmlPullParser.getName().equals("low")) {
+                            }else if (xmlPullParser.getName().equals("low") && (lowCount++)==0) {
                                 eventType = xmlPullParser.next();
                                 todayWeather.setLow(xmlPullParser.getText());
-                            }else if (xmlPullParser.getName().equals("type")) {
+                            }else if (xmlPullParser.getName().equals("type") && (typeCount++)==0) {
                                 eventType = xmlPullParser.next();
                                 todayWeather.setType(xmlPullParser.getText());
                             }
