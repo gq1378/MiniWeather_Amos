@@ -1,6 +1,7 @@
 package com.amos.myweather;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,7 +21,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
+//import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
@@ -28,8 +29,6 @@ import java.net.URL;
 
 public class MainActivity extends Activity implements View.OnClickListener{
     private static final int UPDATE_TODAY_WEATHER=1;
-
-    private ImageView mUpdateBtn;
 
     private TextView cityTv,timeTv,humidityTv,weekTv,pmDataTv,pmQualityTv,temperatureTv,climateTv,
             windTv,city_name_Tv,wenduTv;
@@ -52,7 +51,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.weather_info);
 
-        mUpdateBtn=findViewById(R.id.title_update_btn);
+        ImageView mUpdateBtn = findViewById(R.id.title_update_btn);
         mUpdateBtn.setOnClickListener(this);
 
         if(NetUtil.getNetworkState(this)!=NetUtil.NETWORK_NONE){
@@ -62,11 +61,20 @@ public class MainActivity extends Activity implements View.OnClickListener{
             Log.d("MyWeather","网络挂了");
             Toast.makeText(this, "网络挂了", Toast.LENGTH_LONG).show();
         }
+
+        ImageView mCitySelect=findViewById(R.id.title_city_manager);
+        mCitySelect.setOnClickListener(this);
+
         initView();
     }
 
     @Override
     public void onClick(View view){
+        if(view.getId()==R.id.title_city_manager){
+            Intent i=new Intent(this,SelectCity.class);
+            startActivityForResult(i,1);
+        }
+
         if(view.getId()==R.id.title_update_btn){
             SharedPreferences sharedPreferences=getSharedPreferences("config",MODE_PRIVATE);
             String citycode=sharedPreferences.getString("main_city_code","101010100");
@@ -82,6 +90,21 @@ public class MainActivity extends Activity implements View.OnClickListener{
         }
     }
 
+    protected void onActivityResult(int requestCode,int resultCode,Intent data){
+        if(requestCode==1&&resultCode==RESULT_OK){
+            String newCityCode=data.getStringExtra("cityCode");
+            Log.d("MyWeather","选择的城市代码为"+newCityCode);
+            if(NetUtil.getNetworkState(this)!=NetUtil.NETWORK_NONE){
+                Log.d("MyWeather","网络OK");
+                queryWeatherCode(newCityCode);
+            }else {
+                Log.d("MyWeather","网络挂了");
+                Toast.makeText(this,"网络挂了！",Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+
 //  prama citycode
     private void queryWeatherCode(String cityCode){
         final String address="http://wthrcdn.etouch.cn/WeatherApi?citykey="+cityCode;
@@ -90,7 +113,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
             @Override
             public void run(){
                 HttpURLConnection con=null;
-                TodayWeather todayWeather=null;
+//                TodayWeather todayWeather;
                 try{
                     URL url=new URL(address);
                     con=(HttpURLConnection)url.openConnection();
@@ -107,7 +130,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
                     String responseStr=response.toString();
                     Log.d("MyWeather",responseStr);
 
-                    todayWeather=parseXML(responseStr);
+                    TodayWeather todayWeather=parseXML(responseStr);
                     if(todayWeather!=null)
                         Log.d("MyWeather",todayWeather.toString());
 //
@@ -204,10 +227,10 @@ public class MainActivity extends Activity implements View.OnClickListener{
                                 todayWeather.setDate(xmlPullParser.getText());
                             }else if (xmlPullParser.getName().equals("high") && (highCount++)==0) {
                                 eventType = xmlPullParser.next();
-                                todayWeather.setHigh(xmlPullParser.getText());
+                                todayWeather.setHigh(xmlPullParser.getText().substring(2).trim());
                             }else if (xmlPullParser.getName().equals("low") && (lowCount++)==0) {
                                 eventType = xmlPullParser.next();
-                                todayWeather.setLow(xmlPullParser.getText());
+                                todayWeather.setLow(xmlPullParser.getText().substring(2).trim());
                             }else if (xmlPullParser.getName().equals("type") && (typeCount++)==0) {
                                 eventType = xmlPullParser.next();
                                 todayWeather.setType(xmlPullParser.getText());
@@ -219,26 +242,24 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 }
                 eventType=xmlPullParser.next();
             }
-        }catch (XmlPullParserException e) {
-            e.printStackTrace();
-        }catch (IOException e){
+        }catch (XmlPullParserException|IOException e){
             e.printStackTrace();
         }
         return todayWeather;
     }
 
     void updateTodayWeather(TodayWeather todayWeather){
-        city_name_Tv.setText(todayWeather.getCity()+"天气");
+        city_name_Tv.setText(todayWeather.getCityName());
         cityTv.setText(todayWeather.getCity());
-        timeTv.setText(todayWeather.getUpdatetime()+"发布");
-        humidityTv.setText("湿度："+todayWeather.getShidu());
+        timeTv.setText(todayWeather.getUpdatetime());
+        humidityTv.setText(todayWeather.getShidu());
         pmDataTv.setText(todayWeather.getPm25());
         pmQualityTv.setText(todayWeather.getQuality());
         weekTv.setText(todayWeather.getDate());
-        temperatureTv.setText(todayWeather.getHigh()+"~"+todayWeather.getLow());
+        temperatureTv.setText(todayWeather.getHL());
         climateTv.setText(todayWeather.getType());
-        windTv.setText("风力："+todayWeather.getFengli());
-        wenduTv.setText("温度："+todayWeather.getWendu()+"℃");
+        windTv.setText(todayWeather.getFengli());
+        wenduTv.setText(todayWeather.getWendu());
 
         if(todayWeather.getPmImag()<51)
             pmImag.setImageResource(R.drawable.biz_plugin_weather_0_50);

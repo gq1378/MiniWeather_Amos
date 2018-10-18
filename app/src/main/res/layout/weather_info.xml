@@ -166,7 +166,7 @@
                 android:text="5℃~-5℃"
                 android:textColor="@android:color/white"
                 android:layout_toRightOf="@id/weather_img"
-                android:textSize="20sp"
+                android:textSize="30sp"
                 android:layout_below="@id/week"
                 android:layout_marginLeft="5dp"
                 android:id="@+id/temperature"/>

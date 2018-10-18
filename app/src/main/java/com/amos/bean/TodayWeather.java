@@ -1,7 +1,7 @@
 package com.amos.bean;
 
 public class TodayWeather {
-    private String city;
+    private String city=getCity()+"天气";
     private String updatetime;
     private String wendu;
     private String shidu;
@@ -34,20 +34,24 @@ public class TodayWeather {
 //    }
 
 
+    public String getCityName() {
+        return city+"天气";
+    }
+
     public String getCity() {
         return city;
     }
 
     public String getUpdatetime() {
-        return updatetime;
+        return updatetime+"发布";
     }
 
     public String getWendu() {
-        return wendu;
+        return "温度："+wendu+"℃";
     }
 
     public String getShidu() {
-        return shidu;
+        return "湿度："+shidu;
     }
 
     public String getPm25() {
@@ -63,20 +67,20 @@ public class TodayWeather {
     }
 
     public String getFengli() {
-        return fengli;
+        return "风力："+fengli;
     }
 
     public String getDate() {
         return date;
     }
 
-    public String getHigh() {
-        return high;
+    public String getHL() {
+        return high+"~"+low;
     }
 
-    public String getLow() {
-        return low;
-    }
+//    public String getLow() {
+//        return low;
+//    }
 
     public String getType() {
         return type;
@@ -130,6 +134,8 @@ public class TodayWeather {
     public void setType(String type) {
         this.type = type;
     }
+
+
 
     @Override
     public String toString(){
