@@ -48,12 +48,12 @@ public class MyApplication extends Application {
 //        读取数据库路径代表的数据的
         mCityList=mCityDB.getAllCity();
 //        int i=0;
-        for(City city:mCityList){break;
+//        for(City city:mCityList){
 //            i++;
 //            String cityName=city.getCity();
 //            String cityCode=city.getNumber();
 //            Log.d(TAG,cityCode+":"+cityName);
-        }
+//        }
 //        Log.d(TAG,"i="+i);
         return true;
     }
