@@ -9,6 +9,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +22,6 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-//import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
@@ -32,12 +32,15 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
     private TextView cityTv,timeTv,humidityTv,weekTv,pmDataTv,pmQualityTv,temperatureTv,climateTv,
             windTv,city_name_Tv,wenduTv;
-    private ImageView weatherImg,pmImag;
+    private ImageView mUpdateBtn,weatherImg,pmImag;
+    private ProgressBar mUpdateProgress;
 
     private Handler mHandler=new Handler(){
         public void handleMessage(Message msg){
             switch (msg.what){
                 case UPDATE_TODAY_WEATHER:
+                    mUpdateProgress.setVisibility(View.INVISIBLE);
+                    mUpdateBtn.setVisibility(View.VISIBLE);
                     updateTodayWeather((TodayWeather)msg.obj);
                     break;
                     default: break;
@@ -51,7 +54,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.weather_info);
 
-        ImageView mUpdateBtn = findViewById(R.id.title_update_btn);
+        mUpdateBtn = findViewById(R.id.title_update_btn);
         mUpdateBtn.setOnClickListener(this);
 
         if(NetUtil.getNetworkState(this)!=NetUtil.NETWORK_NONE){
@@ -76,12 +79,16 @@ public class MainActivity extends Activity implements View.OnClickListener{
         }
 
         if(view.getId()==R.id.title_update_btn){
+
             SharedPreferences sharedPreferences=getSharedPreferences("config",MODE_PRIVATE);
             String citycode=sharedPreferences.getString("main_city_code","101010100");
             Log.d("MyWeather",citycode);
 
             if(NetUtil.getNetworkState(this)!=NetUtil.NETWORK_NONE){
                 Log.d("MyWeather","网络OK");
+                mUpdateBtn.setVisibility(View.INVISIBLE);
+                mUpdateProgress=findViewById(R.id.title_update_progress);
+                mUpdateProgress.setVisibility(View.VISIBLE);
                 queryWeatherCode(citycode);
             }else {
                 Log.d("MyWeather","网络挂了");
@@ -96,6 +103,9 @@ public class MainActivity extends Activity implements View.OnClickListener{
             Log.d("MyWeather","选择的城市代码为"+newCityCode);
             if(NetUtil.getNetworkState(this)!=NetUtil.NETWORK_NONE){
                 Log.d("MyWeather","网络OK");
+                mUpdateBtn.setVisibility(View.INVISIBLE);
+                mUpdateProgress=findViewById(R.id.title_update_progress);
+                mUpdateProgress.setVisibility(View.VISIBLE);
                 queryWeatherCode(newCityCode);
             }else {
                 Log.d("MyWeather","网络挂了");

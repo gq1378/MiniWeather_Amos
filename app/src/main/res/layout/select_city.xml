@@ -47,6 +47,11 @@
             android:drawableStart="@drawable/magnifying_glass"
             android:drawablePadding="6dp"
             android:textSize="15sp"
+            android:singleLine="true"
+            android:paddingStart="10dp"
+            android:paddingEnd="30dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
             android:id="@+id/city_search"/>
     </RelativeLayout>
 

@@ -16,6 +16,11 @@ public class City {
         return number;
     }
 
+    @Override
+    public String toString(){
+        return province+" "+city+" "+number+" "+firstPY.toLowerCase()+" "+allPY.toLowerCase()+" "+allFirstPY.toLowerCase();
+    }
+
     public City(String province, String city, String number, String firstPY, String allPY, String allFirstPY){
         this.province=province;
         this.city=city;

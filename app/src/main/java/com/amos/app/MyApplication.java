@@ -44,18 +44,9 @@ public class MyApplication extends Application {
         }).start();
     }
 
-    private boolean prepareCityList(){
+    private void prepareCityList(){
 //        读取数据库路径代表的数据的
         mCityList=mCityDB.getAllCity();
-//        int i=0;
-//        for(City city:mCityList){
-//            i++;
-//            String cityName=city.getCity();
-//            String cityCode=city.getNumber();
-//            Log.d(TAG,cityCode+":"+cityName);
-//        }
-//        Log.d(TAG,"i="+i);
-        return true;
     }
 
 //    返回城市数据链表
@@ -88,7 +79,7 @@ public class MyApplication extends Application {
                 InputStream is = getAssets().open("city.db");
 //                db.createNewFile();
                 FileOutputStream fos = new FileOutputStream(db);
-                int len = -1;
+                int len;
                 byte[] buffer = new byte[1024];
                 while ((len = is.read(buffer)) != -1) {
                     fos.write(buffer, 0, len);

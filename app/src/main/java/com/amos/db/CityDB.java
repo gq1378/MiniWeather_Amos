@@ -31,6 +31,7 @@ public class CityDB {
             City item=new City(province,city,number,firstPY,allPY,allFirstPY);
             list.add(item);
         }
+        c.close();
         return list;
     }
 }
