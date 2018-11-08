@@ -7,7 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import com.amos.bean.City;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CityDB {
     public static final String CITY_DB_NAME="city.db";

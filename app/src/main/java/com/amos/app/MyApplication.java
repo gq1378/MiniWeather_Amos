@@ -54,6 +54,15 @@ public class MyApplication extends Application {
         return mCityList;
     }
 
+    public String cityToNum(String city){
+        for(City c:mCityList){
+            if(c.getCity().equals(city)){
+                return c.getNumber();
+            }
+        }
+        return null;
+    }
+
     private CityDB openCityDB(){
         String path="/data"
                 + Environment.getDataDirectory().getAbsolutePath()

@@ -199,6 +199,41 @@
                 android:layout_marginStart="5dp"
                 android:id="@+id/wind"/>
         </RelativeLayout>
+        <!--未来6天-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/vplayout">
+            <android.support.v4.view.ViewPager
+                android:layout_width="wrap_content"
+                android:layout_height="230dp"
+                android:paddingTop="20dp"
+                android:gravity="center_vertical"
+                android:id="@+id/vp">
+            </android.support.v4.view.ViewPager>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:src="@drawable/page_indicator_focused" />
+
+            <ImageView
+                android:id="@+id/iv2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:src="@drawable/page_indicator_unfocused" />
+        </LinearLayout>
 
     </LinearLayout>
 </RelativeLayout>

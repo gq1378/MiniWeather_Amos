@@ -30,7 +30,6 @@ public class SelectCity extends Activity implements View.OnClickListener{
     private List<City> citylist;
     private List<String> cityData;
     private List<String> filterCityData;
-    private List<String> filterCityNum;
     private ArrayAdapter<String> adapter;
 
     @Override
@@ -43,7 +42,7 @@ public class SelectCity extends Activity implements View.OnClickListener{
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                city_chosen=filterCityNum.get(position);
+                city_chosen=filterCityData.get(position);
                 title="当前城市："+filterCityData.get(position);
                 title_name.setText(title);
                 Toast.makeText(SelectCity.this,"你选择了"+filterCityData.get(position),Toast.LENGTH_SHORT).show();
@@ -82,12 +81,9 @@ public class SelectCity extends Activity implements View.OnClickListener{
         MyApplication myApplication=MyApplication.getInstance();
         citylist=myApplication.getCityList();
         cityData=new ArrayList<>();
-        filterCityNum=new ArrayList<>();
         for(City city:citylist){
             String item=city.getCity();
             cityData.add(item);
-            item=city.getNumber();
-            filterCityNum.add(item);
         }
 
         filterCityData=new ArrayList<>();
@@ -101,20 +97,13 @@ public class SelectCity extends Activity implements View.OnClickListener{
 
     private void filterData(String s){
         filterCityData.clear();
-        filterCityNum.clear();
         if(isEmpty(s)){
             filterCityData.addAll(cityData);
-            for(City city:citylist){
-                String item=city.getNumber();
-                filterCityNum.add(item);
-            }
         }else {
             for(City city:citylist){
                 if(city.toString().contains(s)) {
                     String item=city.getCity();
                     filterCityData.add(item);
-                    item=city.getNumber();
-                    filterCityNum.add(item);
                 }
             }
         }
@@ -126,7 +115,7 @@ public class SelectCity extends Activity implements View.OnClickListener{
         switch (v.getId()){
             case R.id.titel_back:
                 Intent i=new Intent();
-                i.putExtra("cityCode",city_chosen);
+                i.putExtra("city",city_chosen);
                 setResult(RESULT_OK,i);
                 finish();
                 break;
